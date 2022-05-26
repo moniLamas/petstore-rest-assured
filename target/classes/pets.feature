@@ -22,22 +22,15 @@ Feature: (e2e) Validate pets
       | name |
       | puppi |
 
-#  @petPut
-#  Scenario Outline: (e2e) Validate update a pet
-#    Given the following put request that update a pet
-#    And the response is 200 for the put
-#    Then the body response contains update <updated_status>
-#
-#    Examples:
-#      | updated_status |
-#      | sold           |
-#      | available      |
-#      | pending        |
-#
-#
-#  @petDelete
-#  Scenario: (e2e) Validate delete user
-#    Given  the following post that add pet
-#    And the following delete request that delete pet
-#    And the response is 204 for the delete
-#    Then the body response is empty
+  @petPut
+  Scenario Outline: (e2e) Validate update a pet
+    Given the following put request that update a pet
+    And the response is 200 for the put pet
+    Then the body response contains update "<updated_status>"
+
+    Examples:
+      | updated_status |
+      | sold           |
+
+
+

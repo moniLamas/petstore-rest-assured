@@ -16,6 +16,8 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.BeforeClass;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -24,7 +26,7 @@ public class UsersImplementation implements Serializable {
     private Response postUsers = null;
     private Response deleteUsers = null;
 
-    @Before
+    @BeforeClass
     public void before(){
         RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }

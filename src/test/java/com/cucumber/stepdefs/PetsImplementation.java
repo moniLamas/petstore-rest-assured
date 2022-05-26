@@ -79,34 +79,72 @@ public class PetsImplementation implements Serializable {
                 "  ],\n" +
                 "  \"status\": \"available\"\n" +
                 "}";
-        Map<String,Object> result =
+        Map<String,Object> bodyRequest =
                 new ObjectMapper().readValue(JSON_SOURCE, HashMap.class);
-        /*HashMap bodyRequestMap = new HashMap();
-        bodyRequestMap.put("id", "5");
-        bodyRequestMap.put("category", new HashMap());
-        ((Map)bodyRequestMap.get("category")).put("id", 19);
-        ((Map)bodyRequestMap.get("category")).put("name", "puppi");
-        bodyRequestMap.put("name", "doggie");
-        bodyRequestMap.put("photoUrls", new Object[] {"url"});
-        bodyRequestMap.put("tags", new ArrayList[] {new HashMap()});
-        ((Map)bodyRequestMap.get("tags")).put("id", 0);
-        ((Map)bodyRequestMap.get("tags")).put("name", "string");
-        bodyRequestMap.put("status", "available");*/
+        /*HashMap bodyRequest = new HashMap();
+        bodyRequest.put("id", "5");
+        bodyRequest.put("category", new HashMap());
+        ((Map)bodyRequest.get("category")).put("id", 19);
+        ((Map)bodyRequest.get("category")).put("name", "puppi");
+        bodyRequest.put("name", "doggie");
+        bodyRequest.put("photoUrls", new Object[] {"url"});
+        bodyRequest.put("tags", new Array[] {new HashMap()});
+        ((Map)bodyRequest.get("tags")).put("id", 0);
+        ((Map)bodyRequest.get("tags")).put("name", "string");
+        bodyRequest.put("status", "available");*/
         postPet =
-                given().contentType(ContentType.JSON).body(result).post("/pet");
+                given().contentType(ContentType.JSON).body(bodyRequest).post("/pet");
     }
 
     @And("the response is 200 for the post pet")
-    public void validateResponsePost() {
+    public void validateStatusCodePostPet() {
         assertTrue("The response is not 200",postPet.statusCode()==200);
     }
 
     @Then("the body response contains the {string} of the pet created")
-    public void validateResponsePostBodyValueName(String updateName) {
+    public void validateResponsePostPet(String updateName) {
         JsonPath jsonPathPet = new JsonPath(postPet.body().asString());
         String jsonPet = jsonPathPet.getString("name");
         assertEquals("The value of the name field is not what is expected",updateName,jsonPet);
     }
 
+    //Update pet, apply change status
+    @Given("the following put request that update a pet")
+    public void putPet() throws IOException {
+        String JSON_SOURCE = "{\n" +
+                "  \"id\": 3006670003455,\n" +
+                "  \"category\": {\n" +
+                "    \"id\": 0,\n" +
+                "    \"name\": \"puppi\"\n" +
+                "  },\n" +
+                "  \"name\": \"puppi\",\n" +
+                "  \"photoUrls\": [\n" +
+                "    \"string\"\n" +
+                "  ],\n" +
+                "  \"tags\": [\n" +
+                "    {\n" +
+                "      \"id\": 0,\n" +
+                "      \"name\": \"string\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"status\": \"sold\"\n" +
+                "}";
+        Map<String,Object> bodyRequest =
+                new ObjectMapper().readValue(JSON_SOURCE, HashMap.class);
 
+        putPet =
+                given().contentType(ContentType.JSON).body(bodyRequest).put("/pet");
+    }
+
+    @And("the response is 200 for the put pet")
+    public void validateStatusCodePutPet() {
+        assertTrue("The response is not 200",putPet.statusCode()==200);
+    }
+
+    @Then("the body response contains update {string}")
+    public void validateResponsePutPet(String updatedStatus) {
+        JsonPath jsonPathPets = new JsonPath(putPet.body().asString());
+        String jsonPetStatus = jsonPathPets.getString("status");
+        assertEquals("The value of the status field is not what is expected",updatedStatus,jsonPetStatus);
+    }
 }
