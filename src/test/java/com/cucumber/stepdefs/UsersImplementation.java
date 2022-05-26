@@ -26,28 +26,45 @@ public class UsersImplementation implements Serializable {
 
     @Before
     public void before(){
-        RestAssured.baseURI = "https://reqres.in/api/";
+        RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }
 
-    @Given("the following get request that brings us the users")
-    public Response getUsers(){
-        //Response responseGetUsers = given().baseUri("https://reqres.in/api/users?page=2").get();
-        // given().param("page", 2).baseUri("https://reqres.in/api/users").get();
-        Response responseGetUsers = given().log().all().param("page", 2).get("/users");
-        return responseGetUsers;
+    // POST crear un nuevo usuario
+    @Given("the following post request that add one user")
+    public void postUsers(){
+// given()
+// .accept(ContentType.JSON)
+// . body("{\"name\":\"juan\", \"job\":\"developer\"}")
+// .post("/users");
+        HashMap<String, String> bodyRequestMap = new HashMap<>();
+        bodyRequestMap.put("id", "101");
+        bodyRequestMap.put("username", "kateMiles");
+        bodyRequestMap.put("firstName", "Kate");
+        bodyRequestMap.put("lastName", "Miles");
+        bodyRequestMap.put("email", "kmiles@petshop.com");
+        bodyRequestMap.put("password", "phillie");
+        bodyRequestMap.put("phone", "909090909");
+        bodyRequestMap.put("userStatus", "0");
+
+        postUsers =
+                given().contentType(ContentType.JSON).body(bodyRequestMap).post("/user");
     }
 
-    @And("the response is 200")
-    public void validateResponse(){
-        assertTrue("The response is not 200",getUsers().statusCode()==200);
+    @And("the response is 201 for the post")
+    public void validateResponsePost() {
+        assertTrue("The response is not 200",postUsers.statusCode()==200);
     }
 
-    @And("the body response contains the corresponding ids")
-    public void validateUserIds(){
-        getUsers().then().body("data.id", hasItems(7,8,9,10,11,12));
+    @And("the body response contains key id")
+    public void validateResponsePostKeyBody(){
+        postUsers.then().body("$",hasKey("id"));
     }
-    @Then("the total page contains {int}")
-    public void validateTotalPages(Integer page){
-        getUsers().then().body("total_pages", equalTo(page));
+
+    @Then("the body response contains the {string} of the user created")
+    public void validateResponsePostBodyValueName(String message) {
+        JsonPath jsonPathUsers = new JsonPath(postUsers.body().asString());
+        String jsonUsers=jsonPathUsers.getString("message");
+        assertEquals("The value of the name field is not what is expected",message,jsonUsers);
     }
+
 }
