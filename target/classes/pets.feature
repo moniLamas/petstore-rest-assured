@@ -1,3 +1,4 @@
+@pets
 Feature: (e2e) Validate pets
 
   @petsAll

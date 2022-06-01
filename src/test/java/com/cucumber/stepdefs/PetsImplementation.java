@@ -25,7 +25,7 @@ public class PetsImplementation implements Serializable {
     private Response putPet = null;
     private Response deletePet = null;
 
-    @Before
+    @Before("@pets")
     public void before(){
         RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }
