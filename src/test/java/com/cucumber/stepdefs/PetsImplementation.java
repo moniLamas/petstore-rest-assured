@@ -39,23 +39,19 @@ public class PetsImplementation implements Serializable {
     }
     @Then("the response is 200")
     public void validateResponse(){
-        assertTrue("The response is not 200",getAllPets().statusCode()==200);
+        assertEquals("The response is not 200", 200, getAllPets().statusCode());
     }
 
 
     // Get list pets availables
     @Given("the following get request that brings us the pets availables")
     public Response listPetAvailable() {
-         Response responseListPetAvalible = given().param("status", "availables").get("/pet/findByStatus");
-         return responseListPetAvalible;
+        return given().param("status", "availables").get("/pet/findByStatus");
     }
-    /*@And("response message")
-    public void validateMessageResponse(){
-        listPetAvailable().then().body("data",contains("status", "available") );
-    }*/
-    @Then("the response is 200 for avalaibles")
+
+    @Then("the response is 200 for availables")
     public void validateResponseAvalaibles(){
-        assertTrue("The response is not 200",listPetAvailable().statusCode()==200);
+        assertEquals("The response is not 200", 200, listPetAvailable().statusCode());
     }
 
     //Create new pet
@@ -89,8 +85,10 @@ public class PetsImplementation implements Serializable {
         bodyRequest.put("name", "doggie");
         bodyRequest.put("photoUrls", new Object[] {"url"});
         bodyRequest.put("tags", new Array[] {new HashMap()});
-        ((Map)bodyRequest.get("tags")).put("id", 0);
-        ((Map)bodyRequest.get("tags")).put("name", "string");
+        bodyRequest.put("tags", tagsList);
+        tagsMap.put("id", 0);
+        tagsMap.put("name", "string");
+        tagList.add(tagsMap);
         bodyRequest.put("status", "available");*/
         postPet =
                 given().contentType(ContentType.JSON).body(bodyRequest).post("/pet");
@@ -146,5 +144,18 @@ public class PetsImplementation implements Serializable {
         JsonPath jsonPathPets = new JsonPath(putPet.body().asString());
         String jsonPetStatus = jsonPathPets.getString("status");
         assertEquals("The value of the status field is not what is expected",updatedStatus,jsonPetStatus);
+    }
+
+    //Delete pet
+    @And( "the following delete request that delete a pet")
+    public void deletePets(){
+        JsonPath jsonPathPets = new JsonPath(postPet.body().asString());
+        String jsonPetId = jsonPathPets.getString("id");
+        deletePet = given().accept(ContentType.JSON).delete("/pet/"+ jsonPetId);
+    }
+
+    @Then("the body response is 200 for the delete pet")
+    public void validateResponseDeletePet() {
+        assertEquals("The response is not 200", 200, deletePet.statusCode());
     }
 }

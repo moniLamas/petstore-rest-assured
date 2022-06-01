@@ -8,8 +8,7 @@ Feature: (e2e) Validate pets
   @petsAvailable
   Scenario: (e2e) Validate that pets are in available status
     Given the following get request that brings us the pets availables
-#    And response message
-    Then the response is 200 for avalaibles
+    Then the response is 200 for availables
 
 
   @petPost
@@ -33,4 +32,8 @@ Feature: (e2e) Validate pets
       | sold           |
 
 
-
+  @petDelete
+  Scenario: (e2e) Validate delete a pet
+    Given the following post that add pet
+    And the following delete request that delete a pet
+    Then the body response is 200 for the delete pet
