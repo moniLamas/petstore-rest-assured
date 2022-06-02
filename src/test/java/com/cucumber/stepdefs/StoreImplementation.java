@@ -81,4 +81,18 @@ public class StoreImplementation implements Serializable {
     public void validateResponseGetOrder() {
         assertEquals("The response is not 200", 200, getOrder().statusCode());
     }
+
+    // Delete order
+    @Given("the following delete request that delete a order")
+    public void deleteOrder() {
+        postOrder();
+        JsonPath jsonPathOrder = new JsonPath(postOrder.body().asString());
+        String jsonOrderId = jsonPathOrder.getString("id");
+        deleteOrder = given().accept(ContentType.JSON).delete("/order/"+jsonOrderId);
+    }
+
+    @Given("the response is 200 for delete order")
+    public void validateResponseDeleteOrder() {
+        assertEquals("The response is not 200", 200, deleteOrder.statusCode());
+    }
 }
