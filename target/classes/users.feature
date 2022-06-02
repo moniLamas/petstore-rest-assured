@@ -15,8 +15,8 @@ Feature: (e2e) Validate users
   @users-get
   Scenario Outline: (e2e) Validate that the response has the new user
     Given the following get request which brings us "<username>"
-    And the response is 200 for the get user
-    Then the body response contains the "<email>"
+    #And the body response contains the "<email>"
+    Then the response is 200 for the get user
     Examples:
       | username    | email              |
       | georgeLucas | glucas@petshop.com |

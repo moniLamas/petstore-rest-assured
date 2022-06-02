@@ -21,6 +21,7 @@ import java.util.HashMap;
 public class UsersImplementation implements Serializable {
     private Response putUser = null;
     private Response postUser = null;
+    private Response postUserList = null;
     private Response deleteUser= null;
     private Response getUser = null;
 
@@ -73,14 +74,15 @@ public class UsersImplementation implements Serializable {
         return getUser;
     }
 
-    @And("the response is 200 for the get user")
+    /*@And("the body response contains the {string}")
+    public Response emailGetUser(String username) {
+        getUser = given().log().all().get("/user/"+username);
+        return getUser;
+    }*/
+    @Then("the response is 200 for the get user")
     public void statusCodeGetUser() {
         assertEquals("The response is not 200", 200, getUser.statusCode());
     }
 
-    @Then("the body response contains the {string}")
-    public Response emailGetUser(String email) {
-        getUser = given().log().all().get("/user/"+email);
-        return getUser;
-    }
+
 }
