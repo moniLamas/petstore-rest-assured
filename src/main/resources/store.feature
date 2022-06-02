@@ -15,3 +15,8 @@ Feature: (e2e) Validate store
     Examples:
       | complete |
       | true   |
+
+   @get-order-id
+   Scenario: (e2e) Validate that the response has the order by id
+     Given the following get request brings us the created order
+     Then the response is 200 for order by id

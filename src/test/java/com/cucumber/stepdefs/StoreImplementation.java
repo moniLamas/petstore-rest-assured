@@ -66,4 +66,19 @@ public class StoreImplementation implements Serializable {
         assertEquals("The value of complete is not as expected", valueComplete, jsonOrder );
     }
 
+    //Get order by id
+    @Given("the following get request brings us the created order")
+    public Response getOrder() {
+        postOrder();
+        JsonPath jsonPathOrder = new JsonPath(postOrder.body().asString());
+        String jsonOrderId = jsonPathOrder.getString("id");
+        Response responseOrderId = given().get("/order/"+ jsonOrderId);
+        return responseOrderId;
+    }
+
+
+    @Then("the response is 200 for order by id")
+    public void validateResponseGetOrder() {
+        assertEquals("The response is not 200", 200, getOrder().statusCode());
+    }
 }
