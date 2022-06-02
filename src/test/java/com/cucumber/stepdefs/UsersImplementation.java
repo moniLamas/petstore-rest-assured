@@ -19,27 +19,28 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class UsersImplementation implements Serializable {
-    private Response putUsers = null;
+    private Response putUser = null;
     private Response postUser = null;
-    private Response deleteUsers = null;
+    private Response deleteUser= null;
+    private Response getUser = null;
 
     @Before("@users")
     public void before(){
         RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }
 
-    // POST crear un nuevo usuario
+    // POST create a new user @user-post
     @Given("the following post request that add one user")
     public void postUser(){
         HashMap<String, String> bodyRequestMap = new HashMap<>();
         bodyRequestMap.put("id", "100511");
-        bodyRequestMap.put("username", "kateMiles");
-        bodyRequestMap.put("firstName", "Kate");
-        bodyRequestMap.put("lastName", "Miles");
-        bodyRequestMap.put("email", "kmiles@petshop.com");
-        bodyRequestMap.put("password", "phillie");
+        bodyRequestMap.put("username", "georgeLucas");
+        bodyRequestMap.put("firstName", "George");
+        bodyRequestMap.put("lastName", "Lucas");
+        bodyRequestMap.put("email", "glucas@petshop.com");
+        bodyRequestMap.put("password", "wookiee");
         bodyRequestMap.put("phone", "909090909");
-        bodyRequestMap.put("userStatus", "0");
+        bodyRequestMap.put("userStatus", "2");
 
         postUser =
                 given().contentType(ContentType.JSON).body(bodyRequestMap).post("/user");
@@ -65,4 +66,21 @@ public class UsersImplementation implements Serializable {
         assertEquals("The value of the name field is not what is expected",message,jsonUsers);
     }
 
+    // GET users
+    @Given("the following get request which brings us {string}")
+    public Response getUser(String username) {
+        getUser = given().log().all().get("/user/"+username);
+        return getUser;
+    }
+
+    @And("the response is 200 for the get user")
+    public void statusCodeGetUser() {
+        assertEquals("The response is not 200", 200, getUser.statusCode());
+    }
+
+    @Then("the body response contains the {string}")
+    public Response emailGetUser(String email) {
+        getUser = given().log().all().get("/user/"+email);
+        return getUser;
+    }
 }

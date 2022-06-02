@@ -1,7 +1,7 @@
 @users
 Feature: (e2e) Validate users
 
-  @userPost
+  @user-post
   Scenario Outline: (e2e) Validate post one user
     Given the following post request that add one user
     And the response is 200 for the post user
@@ -11,3 +11,13 @@ Feature: (e2e) Validate users
     Examples:
       | id     | message |
       | 100511 | 100511  |
+
+  @users-get
+  Scenario Outline: (e2e) Validate that the response has the new user
+    Given the following get request which brings us "<username>"
+    And the response is 200 for the get user
+    Then the body response contains the "<email>"
+    Examples:
+      | username    | email              |
+      | georgeLucas | glucas@petshop.com |
+
