@@ -34,7 +34,7 @@ public class UsersImplementation implements Serializable {
         RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }
 
-    // POST create a new user @user-post
+
     @Given("the following post request that add one user")
     public void postUser(){
         HashMap<String, String> bodyRequestMap = new HashMap<>();
@@ -71,7 +71,7 @@ public class UsersImplementation implements Serializable {
         assertEquals("The value of the name field is not what is expected",message,jsonUsers);
     }
 
-    // GET users
+
     @Given("the following get request which brings us {string}")
     public Response getUser(String username) {
         getUser = given().log().all().get("/user/"+username);
@@ -83,7 +83,7 @@ public class UsersImplementation implements Serializable {
         assertEquals("The response is not" + status, 200, getUser.statusCode());
     }
 
-    // Get login @user-login
+
     @Given("the user login with {string} and {string}")
     public Response userLogin(String username, String password) {
 
@@ -97,7 +97,7 @@ public class UsersImplementation implements Serializable {
         assertEquals("The response is not " + status, 200, getLoginUser.statusCode());
     }
 
-    // Get logout @user-logout
+
     @Given("the user logout the current session")
     public Response userLogout() {
         getLogoutUser = given().get("/user/logout");
@@ -109,21 +109,21 @@ public class UsersImplementation implements Serializable {
         assertEquals("The response is not " + status, 200, getLogoutUser.statusCode());
     }
 
-    // PUT update user
+
     @Given("the following put request that update users")
     public void putUser() {
         postUser();
         JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
         String jsonCreate = jsonPathUsers.getString("username");
-        HashMap <String, String> bodyRequestMapPut = new HashMap();
-        bodyRequestMapPut.put("id", "100511");
+        HashMap <String, Object> bodyRequestMapPut = new HashMap<>();
+        bodyRequestMapPut.put("id", 100511);
         bodyRequestMapPut.put("username", "bobPop");
         bodyRequestMapPut.put("firstName", "Bobbie");
         bodyRequestMapPut.put("lastName", "Pop");
         bodyRequestMapPut.put("email", "bobpop@petshop.com");
         bodyRequestMapPut.put("password","bobbie");
         bodyRequestMapPut.put("phone", "999999999");
-        bodyRequestMapPut.put("userStatus", "2");
+        bodyRequestMapPut.put("userStatus", 2);
 
         putUser = given().contentType(ContentType.JSON).body(bodyRequestMapPut).put("/user/" + jsonCreate);
     }
@@ -134,7 +134,6 @@ public class UsersImplementation implements Serializable {
     }
 
 
-    // DELETE user
     @And("following delete request that delete user")
     public void deleteUser() {
         JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
