@@ -21,10 +21,15 @@ Feature: (e2e) Validate users
       | georgeLucas |
 
   @user-login
-  Scenario Outline: (e2e) Validate login
+  Scenario Outline: (e2e) Validate login into the system
     Given the user login with "<username>" and "<password>"
     Then the response is 200 for login
 
     Examples:
       | username    | password |
       | georgeLucas | wookiee  |
+
+  @user-logout
+  Scenario: (e2e) Validate logout current logged in user session
+    Given the user logout the current session
+    Then the response is 200 and message is ok

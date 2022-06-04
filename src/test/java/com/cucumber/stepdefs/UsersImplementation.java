@@ -25,6 +25,7 @@ public class UsersImplementation implements Serializable {
     private Response deleteUser= null;
     private Response getUser = null;
     private Response getLoginUser = null;
+    private Response getLogoutUser = null;
 
     @Before("@users")
     public void before(){
@@ -99,4 +100,14 @@ public class UsersImplementation implements Serializable {
         assertEquals("The response is not " + status, 200, getLoginUser.statusCode());
     }
 
+    @Given("the user logout the current session")
+    public Response userLogout() {
+        getLogoutUser = given().get("/user/logout");
+        return getLogoutUser;
+    }
+
+    @Then("the response is {int} and message is ok")
+    public void statusCodeUserLogout(int status) {
+        assertEquals("The response is not " + status, 200, getLoginUser.statusCode());
+    }
 }

@@ -17,14 +17,19 @@ Feature: (e2e) Validate users
     Given the following get request which brings us "<username>"
     Then the response is 200 for the get user
     Examples:
-      | username    | email              |
-      | georgeLucas | glucas@petshop.com |
+      | username    |
+      | georgeLucas |
 
-  @userLogin
-  Scenario Outline: (e2e) Validate login
+  @user-login
+  Scenario Outline: (e2e) Validate login into the system
     Given the user login with "<username>" and "<password>"
     Then the response is 200 for login
 
     Examples:
       | username    | password |
       | georgeLucas | wookiee  |
+
+  @user-logout
+  Scenario: (e2e) Validate logout current logged in user session
+    Given the user logout the current session
+    Then the response is 200 and message is ok
