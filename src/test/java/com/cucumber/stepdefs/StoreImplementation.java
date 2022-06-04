@@ -2,7 +2,6 @@ package com.cucumber.stepdefs;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -13,10 +12,8 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-
 import java.io.Serializable;
 import java.util.HashMap;
-
 
 
 public class StoreImplementation implements Serializable {
@@ -29,7 +26,7 @@ public class StoreImplementation implements Serializable {
         RestAssured.baseURI = "https://petstore.swagger.io/v2/store/";
     }
 
-    //Get inventory @store-inventory
+
     @Given("the following breeding application that brings us the inventory")
     public Response getInventory() {
         return given().log().all().get("/inventory");
@@ -40,7 +37,7 @@ public class StoreImplementation implements Serializable {
         assertEquals("The response is not 200", 200, getInventory().statusCode());
     }
 
-    //Create order @post-order
+
     @Given("the following post request that add order")
     public void postOrder() {
         HashMap<String, Object> bodyRequestMap = new HashMap<>();
@@ -66,7 +63,7 @@ public class StoreImplementation implements Serializable {
         assertEquals("The value of complete is not as expected", valueComplete, jsonOrder );
     }
 
-    //Get order by id
+
     @Given("the following get request brings us the created order")
     public Response getOrder() {
         postOrder();
@@ -82,7 +79,7 @@ public class StoreImplementation implements Serializable {
         assertEquals("The response is not 200", 200, getOrder().statusCode());
     }
 
-    // Delete order
+
     @Given("the following delete request that delete a order")
     public void deleteOrder() {
         postOrder();
