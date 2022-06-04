@@ -76,17 +76,12 @@ public class UsersImplementation implements Serializable {
         return getUser;
     }
 
-    /*@And("the body response contains the {string}")
-    public Response emailGetUser(String username) {
-        getUser = given().log().all().get("/user/"+username);
-        return getUser;
-    }*/
     @Then("the response is {int} for the get user")
     public void statusCodeGetUser(int status) {
         assertEquals("The response is not" + status, 200, getUser.statusCode());
     }
 
-    // Get userLogin @userlogin
+    // Get login @user-login
     @Given("the user login with {string} and {string}")
     public Response userLogin(String username, String password) {
 
@@ -100,6 +95,7 @@ public class UsersImplementation implements Serializable {
         assertEquals("The response is not " + status, 200, getLoginUser.statusCode());
     }
 
+    // Get logout @user-logout
     @Given("the user logout the current session")
     public Response userLogout() {
         getLogoutUser = given().get("/user/logout");
@@ -110,4 +106,30 @@ public class UsersImplementation implements Serializable {
     public void statusCodeUserLogout(int status) {
         assertEquals("The response is not " + status, 200, getLogoutUser.statusCode());
     }
+
+    // PUT update user
+    @Given("the following put request that update users")
+    public void putUser() {
+        postUser();
+        JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
+        String jsonCreate = jsonPathUsers.getString("username");
+        HashMap <String, String> bodyRequestMapPut = new HashMap();
+        bodyRequestMapPut.put("id", "1052");
+        bodyRequestMapPut.put("username", "bobpop");
+        bodyRequestMapPut.put("firstName", "Bobbie");
+        bodyRequestMapPut.put("lastName", "Pop");
+        bodyRequestMapPut.put("email", "bobpop@petshop.com");
+        bodyRequestMapPut.put("password","bobbie");
+        bodyRequestMapPut.put("phone", "999999999");
+        bodyRequestMapPut.put("userStatus", "2");
+
+        putUser = given().contentType(ContentType.JSON).body(bodyRequestMapPut).put("/user/" + jsonCreate);
+    }
+
+    @Then("the response is {int} for the update")
+    public void statusCodePutUser(int status) {
+        assertEquals("The response is not " + status, 200, putUser.statusCode());
+    }
+
+
 }

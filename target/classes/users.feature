@@ -33,3 +33,9 @@ Feature: (e2e) Validate users
   Scenario: (e2e) Validate logout current logged in user session
     Given the user logout the current session
     Then the response is 200 and message is ok
+
+  @user-update
+  Scenario: (e2e) Validate updated user
+    Given the following put request that update users
+    Then the response is 200 for the update
+
