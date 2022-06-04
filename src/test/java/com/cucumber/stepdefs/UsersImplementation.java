@@ -1,9 +1,9 @@
 package com.cucumber.stepdefs;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasKey;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -24,6 +24,7 @@ public class UsersImplementation implements Serializable {
     private Response postUserList = null;
     private Response deleteUser= null;
     private Response getUser = null;
+    private Response getLoginUser = null;
 
     @Before("@users")
     public void before(){
@@ -47,9 +48,9 @@ public class UsersImplementation implements Serializable {
                 given().contentType(ContentType.JSON).body(bodyRequestMap).post("/user");
     }
 
-    @And("the response is 200 for the post user")
-    public void validateResponsePostUser() {
-        assertEquals("The response is not 200", 200, postUser.statusCode());
+    @And("the response is {int} for the post user")
+    public void validateResponsePostUser(int status) {
+        assertEquals("The response is not" + status, 200, postUser.statusCode());
     }
 
     @And("the body response contains key {string}")
@@ -79,10 +80,23 @@ public class UsersImplementation implements Serializable {
         getUser = given().log().all().get("/user/"+username);
         return getUser;
     }*/
-    @Then("the response is 200 for the get user")
-    public void statusCodeGetUser() {
-        assertEquals("The response is not 200", 200, getUser.statusCode());
+    @Then("the response is {int} for the get user")
+    public void statusCodeGetUser(int status) {
+        assertEquals("The response is not" + status, 200, getUser.statusCode());
     }
 
+    // Get userLogin @userlogin
+    @Given("the user login with {string} and {string}")
+    public Response userLogin(String username, String password) {
+
+        getLoginUser =  given().log().all().param("username", username).param("password",password)
+                .get("/user/login");
+        return getLoginUser;
+    }
+
+    @Then("the response is {int} for login")
+    public void statusCodeUserLogin(int status) {
+        assertEquals("The response is not " + status, 200, getLoginUser.statusCode());
+    }
 
 }
