@@ -21,21 +21,20 @@ import java.util.HashMap;
 public class UsersImplementation implements Serializable {
     private Response putUser = null;
     private Response postUser = null;
-    private Response postUserList = null;
     private Response getUser = null;
     private Response getLoginUser = null;
     private Response getLogoutUser = null;
 
-    private Response deleteUser= null;
+    private Response deleteUser = null;
 
     @Before("@users")
-    public void before(){
+    public void before() {
         RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }
 
 
     @Given("the following post request that add one user")
-    public void postUser(){
+    public void postUser() {
         HashMap<String, String> bodyRequestMap = new HashMap<>();
         bodyRequestMap.put("id", "100510");
         bodyRequestMap.put("username", "georgeLucas");
@@ -56,24 +55,24 @@ public class UsersImplementation implements Serializable {
     }
 
     @And("the body response contains key {string}")
-    public void validateResponsePostKeyBody(String id){
+    public void validateResponsePostKeyBody(String id) {
         JsonPath jsonPathUser = new JsonPath(postUser.body().asString());
         String jsonUser = jsonPathUser.getString("message");
         System.out.println("id: " + jsonUser);
-        assertEquals("The value of the id field is not what is expected",id,jsonUser);
+        assertEquals("The value of the id field is not what is expected", id, jsonUser);
     }
 
     @Then("the body response contains the {string} of the user created")
     public void validateResponsePostBodyValueName(String message) {
         JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
-        String jsonUsers=jsonPathUsers.getString("message");
-        assertEquals("The value of the name field is not what is expected",message,jsonUsers);
+        String jsonUsers = jsonPathUsers.getString("message");
+        assertEquals("The value of the name field is not what is expected", message, jsonUsers);
     }
 
 
     @Given("the following get request which brings us {string}")
     public Response getUser(String username) {
-        getUser = given().log().all().get("/user/"+username);
+        getUser = given().log().all().get("/user/" + username);
         return getUser;
     }
 
@@ -85,8 +84,7 @@ public class UsersImplementation implements Serializable {
 
     @Given("the user login with {string} and {string}")
     public Response userLogin(String username, String password) {
-
-        getLoginUser =  given().log().all().param("username", username).param("password",password)
+        getLoginUser = given().log().all().param("username", username).param("password", password)
                 .get("/user/login");
         return getLoginUser;
     }
@@ -114,13 +112,13 @@ public class UsersImplementation implements Serializable {
         postUser();
         JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
         String jsonCreate = jsonPathUsers.getString("username");
-        HashMap <String, Object> bodyRequestMapPut = new HashMap<>();
+        HashMap<String, Object> bodyRequestMapPut = new HashMap<>();
         bodyRequestMapPut.put("id", 100511);
         bodyRequestMapPut.put("username", "bobPop");
         bodyRequestMapPut.put("firstName", "Bobbie");
         bodyRequestMapPut.put("lastName", "Pop");
         bodyRequestMapPut.put("email", "bobpop@petshop.com");
-        bodyRequestMapPut.put("password","bobbie");
+        bodyRequestMapPut.put("password", "bobbie");
         bodyRequestMapPut.put("phone", "999999999");
         bodyRequestMapPut.put("userStatus", 2);
 

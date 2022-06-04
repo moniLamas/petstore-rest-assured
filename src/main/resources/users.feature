@@ -12,6 +12,7 @@ Feature: (e2e) Validate users
       | id     | message |
       | 100510 | 100510  |
 
+
   @getUsers
   Scenario Outline: (e2e) Validate that the response has the new user
     Given the following get request which brings us "<username>"
