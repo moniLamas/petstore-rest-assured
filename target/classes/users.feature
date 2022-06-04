@@ -1,7 +1,7 @@
 @users
 Feature: (e2e) Validate users
 
-  @user-post
+  @postUser
   Scenario Outline: (e2e) Validate post one user
     Given the following post request that add one user
     And the response is 200 for the post user
@@ -12,7 +12,7 @@ Feature: (e2e) Validate users
       | id     | message |
       | 100510 | 100510  |
 
-  @users-get
+  @getUsers
   Scenario Outline: (e2e) Validate that the response has the new user
     Given the following get request which brings us "<username>"
     Then the response is 200 for the get user
@@ -20,7 +20,7 @@ Feature: (e2e) Validate users
       | username    |
       | georgeLucas |
 
-  @user-login
+  @userLogin
   Scenario Outline: (e2e) Validate login into the system
     Given the user login with "<username>" and "<password>"
     Then the response is 200 for login
@@ -29,17 +29,17 @@ Feature: (e2e) Validate users
       | username    | password |
       | georgeLucas | wookiee  |
 
-  @user-logout
+  @userLogout
   Scenario: (e2e) Validate logout current logged in user session
     Given the user logout the current session
     Then the response is 200 and message is ok
 
-  @user-update
+  @postUser
   Scenario: (e2e) Validate updated user
     Given the following put request that update users
     Then the response is 200 for the update
 
-  @user-delete
+  @deleteUser
   Scenario: (e2e) Validate deleted user
     Given the following post request that add one user
     And following delete request that delete user

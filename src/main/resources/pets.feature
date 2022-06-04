@@ -1,18 +1,18 @@
 @pets
 Feature: (e2e) Validate pets
 
-  @petsAll
+  @getAllPets
   Scenario: (e2e) Validate that the response of the pets request is 200
     Given the following get request that brings us the pets list
     Then the response is 200
 
-  @petsAvailable
+  @getPetsAvailable
   Scenario: (e2e) Validate that pets are in available status
     Given the following get request that brings us the pets availables
     Then the response is 200 for availables
 
 
-  @petPost
+  @postPet
   Scenario Outline: (e2e) Validate post new pet
     Given the following post that add pet
     And the response is 200 for the post pet
@@ -22,7 +22,7 @@ Feature: (e2e) Validate pets
       | name |
       | doggie |
 
-  @petPut
+  @putPet
   Scenario Outline: (e2e) Validate update a pet
     Given the following put request that update a pet
     And the response is 200 for the put pet
@@ -33,7 +33,7 @@ Feature: (e2e) Validate pets
       | sold           |
 
 
-  @petDelete
+  @deletePet
   Scenario: (e2e) Validate delete a pet
     Given the following post that add pet
     And the following delete request that delete a pet
