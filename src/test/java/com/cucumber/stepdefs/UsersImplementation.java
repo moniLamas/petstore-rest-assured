@@ -3,6 +3,7 @@ package com.cucumber.stepdefs;
 import static io.restassured.RestAssured.given;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -22,10 +23,11 @@ public class UsersImplementation implements Serializable {
     private Response putUser = null;
     private Response postUser = null;
     private Response postUserList = null;
-    private Response deleteUser= null;
     private Response getUser = null;
     private Response getLoginUser = null;
     private Response getLogoutUser = null;
+
+    private Response deleteUser= null;
 
     @Before("@users")
     public void before(){
@@ -36,7 +38,7 @@ public class UsersImplementation implements Serializable {
     @Given("the following post request that add one user")
     public void postUser(){
         HashMap<String, String> bodyRequestMap = new HashMap<>();
-        bodyRequestMap.put("id", "100511");
+        bodyRequestMap.put("id", "100510");
         bodyRequestMap.put("username", "georgeLucas");
         bodyRequestMap.put("firstName", "George");
         bodyRequestMap.put("lastName", "Lucas");
@@ -114,8 +116,8 @@ public class UsersImplementation implements Serializable {
         JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
         String jsonCreate = jsonPathUsers.getString("username");
         HashMap <String, String> bodyRequestMapPut = new HashMap();
-        bodyRequestMapPut.put("id", "1052");
-        bodyRequestMapPut.put("username", "bobpop");
+        bodyRequestMapPut.put("id", "100511");
+        bodyRequestMapPut.put("username", "bobPop");
         bodyRequestMapPut.put("firstName", "Bobbie");
         bodyRequestMapPut.put("lastName", "Pop");
         bodyRequestMapPut.put("email", "bobpop@petshop.com");
@@ -132,4 +134,16 @@ public class UsersImplementation implements Serializable {
     }
 
 
+    // DELETE user
+    @And("following delete request that delete user")
+    public void deleteUser() {
+        JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
+        String jsonIdCreate = jsonPathUsers.getString("id");
+        deleteUser = given().accept(ContentType.JSON).delete("/user/" + jsonIdCreate);
+    }
+
+    @Then("the body response is empty")
+    public void theBodyResponseIsEmpty() {
+        assertTrue("The fields are not empty", deleteUser.body().asString().isEmpty());
+    }
 }

@@ -10,7 +10,7 @@ Feature: (e2e) Validate users
 
     Examples:
       | id     | message |
-      | 100511 | 100511  |
+      | 100510 | 100510  |
 
   @users-get
   Scenario Outline: (e2e) Validate that the response has the new user
@@ -39,3 +39,8 @@ Feature: (e2e) Validate users
     Given the following put request that update users
     Then the response is 200 for the update
 
+  @user-delete
+  Scenario: (e2e) Validate deleted user
+    Given the following post request that add one user
+    And following delete request that delete user
+    Then the body response is empty
