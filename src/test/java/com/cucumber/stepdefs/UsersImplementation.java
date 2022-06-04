@@ -108,6 +108,6 @@ public class UsersImplementation implements Serializable {
 
     @Then("the response is {int} and message is ok")
     public void statusCodeUserLogout(int status) {
-        assertEquals("The response is not " + status, 200, getLoginUser.statusCode());
+        assertEquals("The response is not " + status, 200, getLogoutUser.statusCode());
     }
 }
