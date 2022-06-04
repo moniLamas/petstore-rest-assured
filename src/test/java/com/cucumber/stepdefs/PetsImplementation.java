@@ -14,6 +14,7 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class PetsImplementation implements Serializable {
         RestAssured.baseURI = "https://petstore.swagger.io/v2/";
     }
 
-    // Get list All pets
+
     @Given("the following get request that brings us the pets list")
     public Response getAllPets(){
 
@@ -43,7 +44,7 @@ public class PetsImplementation implements Serializable {
     }
 
 
-    // Get list pets availables
+
     @Given("the following get request that brings us the pets availables")
     public Response listPetAvailable() {
         return given().param("status", "availables").get("/pet/findByStatus");
@@ -54,44 +55,12 @@ public class PetsImplementation implements Serializable {
         assertEquals("The response is not 200", 200, listPetAvailable().statusCode());
     }
 
-    //Create new pet
     @Given("the following post that add pet")
-    public void postPet() throws IOException {
-        String JSON_SOURCE = "{\n" +
-                "  \"id\": 0,\n" +
-                "  \"category\": {\n" +
-                "    \"id\": 0,\n" +
-                "    \"name\": \"puppi\"\n" +
-                "  },\n" +
-                "  \"name\": \"puppi\",\n" +
-                "  \"photoUrls\": [\n" +
-                "    \"string\"\n" +
-                "  ],\n" +
-                "  \"tags\": [\n" +
-                "    {\n" +
-                "      \"id\": 0,\n" +
-                "      \"name\": \"string\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"status\": \"available\"\n" +
-                "}";
-        Map<String,Object> bodyRequest =
-                new ObjectMapper().readValue(JSON_SOURCE, HashMap.class);
-        /*HashMap bodyRequest = new HashMap();
-        bodyRequest.put("id", "5");
-        bodyRequest.put("category", new HashMap());
-        ((Map)bodyRequest.get("category")).put("id", 19);
-        ((Map)bodyRequest.get("category")).put("name", "puppi");
-        bodyRequest.put("name", "doggie");
-        bodyRequest.put("photoUrls", new Object[] {"url"});
-        bodyRequest.put("tags", new Array[] {new HashMap()});
-        bodyRequest.put("tags", tagsList);
-        tagsMap.put("id", 0);
-        tagsMap.put("name", "string");
-        tagList.add(tagsMap);
-        bodyRequest.put("status", "available");*/
+    public void postPet() {
+        File jsonFile = new File("src/main/resources/data/newPet.json");
+
         postPet =
-                given().contentType(ContentType.JSON).body(bodyRequest).post("/pet");
+                given().contentType(ContentType.JSON).body(jsonFile).post("/pet");
     }
 
     @And("the response is 200 for the post pet")
@@ -106,7 +75,7 @@ public class PetsImplementation implements Serializable {
         assertEquals("The value of the name field is not what is expected",updateName,jsonPet);
     }
 
-    //Update pet, apply change status
+
     @Given("the following put request that update a pet")
     public void putPet() throws IOException {
         String JSON_SOURCE = "{\n" +
@@ -146,7 +115,7 @@ public class PetsImplementation implements Serializable {
         assertEquals("The value of the status field is not what is expected",updatedStatus,jsonPetStatus);
     }
 
-    //Delete pet
+
     @And( "the following delete request that delete a pet")
     public void deletePets(){
         JsonPath jsonPathPets = new JsonPath(postPet.body().asString());

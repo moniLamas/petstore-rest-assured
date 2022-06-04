@@ -20,7 +20,7 @@ Feature: (e2e) Validate pets
 
     Examples:
       | name |
-      | puppi |
+      | doggie |
 
   @petPut
   Scenario Outline: (e2e) Validate update a pet
