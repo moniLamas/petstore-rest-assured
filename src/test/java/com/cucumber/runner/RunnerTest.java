@@ -11,6 +11,6 @@ import io.cucumber.junit.CucumberOptions;
         ,glue={"com.cucumber.stepdefs"}
 )
 
-public class TestRunner {
+public class RunnerTest {
 
 }
