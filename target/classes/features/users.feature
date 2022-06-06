@@ -13,6 +13,13 @@ Feature: (e2e) Validate users
       | 100510 | 100510  |
 
 
+  @postUserList
+  Scenario: (e2e) Validate post create users with list
+    Given the following post request that create with a list
+    And the response is 200 for the post users list
+    Then the body response for the POST request that create using a list contains ok
+
+
   @getUsers
   Scenario Outline: (e2e) Validate that the response has the new user
     Given the following get request which brings us "<username>"

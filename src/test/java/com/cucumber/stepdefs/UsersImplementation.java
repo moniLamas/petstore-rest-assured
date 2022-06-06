@@ -15,12 +15,15 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class UsersImplementation implements Serializable {
     private Response putUser = null;
     private Response postUser = null;
+    private Response postUsersList = null;
+    private Response jsonPathUser = null;
     private Response getUser = null;
     private Response getLoginUser = null;
     private Response getLogoutUser = null;
@@ -67,6 +70,24 @@ public class UsersImplementation implements Serializable {
         JsonPath jsonPathUsers = new JsonPath(postUser.body().asString());
         String jsonUsers = jsonPathUsers.getString("message");
         assertEquals("The value of the name field is not what is expected", message, jsonUsers);
+    }
+
+
+    @Given("the following post request that create with a list")
+    public void postUsersList() {
+        File jsonFile = new File("src/main/resources/data/usersList.json");
+        postUsersList =  given().contentType(ContentType.JSON).body(jsonFile).post("/user/createWithList");
+    }
+
+    @And("the response is {int} for the post users list")
+    public void statusCodeUsersList(int status) {
+        assertEquals("The response is not " + status, 200, postUsersList.statusCode());
+    }
+    @Then("the body response for the POST request that create using a list contains ok")
+    public void validatePostUsersListContainsMessageOk() {
+        JsonPath jsonPathUsers = new JsonPath(postUsersList.body().asString());
+        String jsonUsers = jsonPathUsers.getString("message");
+        assertEquals("The value of the name field is not what is expected","ok", jsonUsers);
     }
 
 
@@ -142,4 +163,7 @@ public class UsersImplementation implements Serializable {
     public void theBodyResponseIsEmpty() {
         assertTrue("The fields are not empty", deleteUser.body().asString().isEmpty());
     }
+
+
+
 }
