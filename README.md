@@ -1,2 +1,1 @@
-# petstore-rest-assured
-Práctica automatización con Rest Assured con https://petstore.swagger.io/
+# Test automation with Rest Assured for https://petstore.swagger.io/
